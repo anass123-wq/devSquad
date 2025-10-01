@@ -1,11 +1,16 @@
 package com.squad.devsquad.controller;
 
-import lombok.Data;
+import com.squad.devsquad.ProductService;
+import com.squad.devsquad.model.Product;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
-@Data
+import java.util.List;
+
 @RestController
 @RequestMapping("/product")
 public class Controller {
+    @Autowired
+    private ProductService productService;
     @GetMapping("/list")
     public String getProducts(){
         return "products";
@@ -14,12 +19,8 @@ public class Controller {
     public String getProductById(@PathVariable int id){
         return "product id :"+id;
     }
-//    @PostMapping("/")
-//    public void createProduct(@RequestBody String productName){
-//        System.out.println("create product "+ productName);
-//    } 
     @GetMapping
-    public String searchProduct(@RequestParam String name){
-        return "search product "+name;
+    public List<Product> searchProduct(@RequestParam("query") String name){
+        return productService.search(name);
     }
 }
